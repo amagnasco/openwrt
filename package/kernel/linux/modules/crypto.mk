@@ -123,15 +123,29 @@ $(eval $(call KernelPackage,crypto-rng))
 define KernelPackage/crypto-iv
   TITLE:=CryptoAPI initialization vectors
   DEPENDS:=+kmod-crypto-manager +kmod-crypto-rng +kmod-crypto-wq
-  KCONFIG:= CONFIG_CRYPTO_BLKCIPHER2
+  KCONFIG:= CONFIG_CRYPTO_BLKCIPHER2 CONFIG_CRYPTO_ECHAINIV
   FILES:= \
 	$(LINUX_DIR)/crypto/eseqiv.ko \
-	$(LINUX_DIR)/crypto/chainiv.ko
-  AUTOLOAD:=$(call AutoLoad,10,eseqiv chainiv)
+	$(LINUX_DIR)/crypto/chainiv.ko \
+	$(LINUX_DIR)/crypto/echainiv.ko@ge4.3
+  AUTOLOAD:=$(call AutoLoad,10,eseqiv chainiv echainiv@ge4.3)
   $(call AddDepends/crypto)
 endef
 
 $(eval $(call KernelPackage,crypto-iv))
+
+
+define KernelPackage/crypto-echainiv
+  TITLE:=Encrypted Chain IV Generator
+  DEPENDS:=+kmod-crypto-aead
+  KCONFIG:=CONFIG_CRYPTO_ECHAINIV
+  FILES:=$(LINUX_DIR)/crypto/echainiv.ko
+  AUTOLOAD:=$(call AutoLoad,09,echainiv)
+  $(call AddDepends/crypto)
+endef
+
+$(eval $(call KernelPackage,crypto-echainiv))
+
 
 define KernelPackage/crypto-seqiv
   TITLE:=CryptoAPI Sequence Number IV Generator

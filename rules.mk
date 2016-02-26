@@ -118,7 +118,7 @@ else
   TOOLCHAIN_DIR_NAME:=toolchain-$(GNU_TARGET_NAME)
 endif
 
-ifeq ($(or $(CONFIG_EXTERNAL_TOOLCHAIN),$(CONFIG_GCC_VERSION_4_8)),)
+ifeq ($(or $(CONFIG_EXTERNAL_TOOLCHAIN),$(CONFIG_GCC_VERSION_4_8),$(CONFIG_TARGET_uml)),)
   iremap = -iremap $(1):$(2)
 endif
 
@@ -139,6 +139,8 @@ BUILD_DIR_HOST:=$(if $(IS_PACKAGE_BUILD),$(BUILD_DIR)/host,$(BUILD_DIR_BASE)/hos
 STAGING_DIR_HOST:=$(TOPDIR)/staging_dir/host
 
 TARGET_PATH:=$(subst $(space),:,$(filter-out .,$(filter-out ./,$(subst :,$(space),$(PATH)))))
+TARGET_INIT_PATH:=$(call qstrip,$(CONFIG_TARGET_INIT_PATH))
+TARGET_INIT_PATH:=$(if $(TARGET_INIT_PATH),$(TARGET_INIT_PATH),/usr/sbin:/sbin:/usr/bin:/bin)
 TARGET_CFLAGS:=$(TARGET_OPTIMIZATION)$(if $(CONFIG_DEBUG), -g3) $(call qstrip,$(CONFIG_EXTRA_OPTIMIZATION))
 TARGET_CXXFLAGS = $(TARGET_CFLAGS)
 TARGET_ASFLAGS_DEFAULT = $(TARGET_CFLAGS)

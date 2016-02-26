@@ -34,6 +34,7 @@ get_status_led() {
 	a5-v11|\
 	d105|\
 	dcs-930l-b1|\
+	ex2700|\
 	hlk-rm04|\
 	mpr-a1|\
 	mpr-a2)
@@ -74,7 +75,8 @@ get_status_led() {
 	dir-645)
 		status_led="$board:green:wps"
 		;;
-	cf-wr800n)
+	cf-wr800n|\
+	psg1208)
 		status_led="$board:white:wps"
 		;;
 	cy-swr1100|\
